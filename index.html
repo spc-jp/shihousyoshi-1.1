@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>司法書士のためのAIひな形</title>
+    <!-- フォント読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* 司法書士版カラー設定 */
+            --primary-color: #333333;
+            /* タイトルカラー：#333333ベース */
+            --primary-gradient: linear-gradient(135deg, #333333 0%, #4B5563 100%);
+            
+            /* アクセントカラー：#9CA3AF（1箇所のみの指定色） */
+            --gold-accent: #9CA3AF;
+            --accent-color: #9CA3AF;
+            --accent-gradient: linear-gradient(135deg, #9CA3AF 0%, #D1D5DB 100%);
+            
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-sub: #5F6368;
+            --border-color: #E0E0E0;
+            --input-bg: #FFFFFF;
+            --input-border: #DADCE0;
+            --danger-bg: #FEF7E0;
+            --danger-text: #B08800;
+            --modal-overlay: rgba(51, 51, 51, 0.7);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-card: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-float: 0 16px 32px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --spacing-unit: 20px;
+        }
+
+        /* ダークモード上書き */
+        [data-theme="dark"] {
+            --primary-color: #E5E7EB;
+            --primary-gradient: linear-gradient(135deg, #E5E7EB 0%, #F3F4F6 100%);
+            --gold-accent: #9CA3AF;
+            --bg-color: #121212;
+            --card-bg: #1E1E1E;
+            --text-main: #E8EAED;
+            --text-sub: #9AA0A6;
+            --border-color: #3C4043;
+            --input-bg: #28292A;
+            --input-border: #3C4043;
+            --danger-bg: #3C3200;
+            --danger-text: #FDD835;
+            --shadow-card: 0 8px 24px rgba(0,0,0,0.4);
+            --accent-gradient: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --primary-color: #E5E7EB;
+                --primary-gradient: linear-gradient(135deg, #E5E7EB 0%, #F3F4F6 100%);
+                --gold-accent: #9CA3AF;
+                --bg-color: #121212;
+                --card-bg: #1E1E1E;
+                --text-main: #E8EAED;
+                --text-sub: #9AA0A6;
+                --border-color: #3C4043;
+                --input-bg: #28292A;
+                --input-border: #3C4043;
+                --danger-bg: #3C3200;
+                --danger-text: #FDD835;
+                --shadow-card: 0 8px 24px rgba(0,0,0,0.4);
+                --accent-gradient: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: var(--spacing-unit);
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ヘッダーデザイン刷新 */
+        header {
+            padding: 60px 10px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* アプリ名：デザイン強化 */
+        h1 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: 0.08em;
+            margin: 0;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #333333; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        h1::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--gold-accent);
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        [data-theme="dark"] h1 {
+            background: none;
+            -webkit-text-fill-color: initial;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) h1 {
+                background: none;
+                -webkit-text-fill-color: initial;
+                color: #FFFFFF;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            }
+        }
+
+        /* 設定ボタン位置変更：右上に独立させる */
+        .settings-btn {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            transform: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-sub);
+            padding: 8px;
+            opacity: 0.6;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+        .settings-btn:hover {
+            opacity: 1;
+            transform: rotate(30deg);
+        }
+
+        .subtitle {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-top: 24px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+        }
+
+        .usage-link {
+            display: inline-block;
+            font-size: 12px;
+            color: var(--text-sub);
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .usage-link:hover {
+            border-color: var(--gold-accent);
+            color: var(--text-main);
+        }
+
+        /* カードグリッド */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px 16px;
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 160px;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-gradient);
+            opacity: 0.8;
+        }
+
+        .card:active { transform: scale(0.96); box-shadow: var(--shadow-sm); }
+        .card:hover {
+            border-color: rgba(156, 163, 175, 0.3);
+            box-shadow: var(--shadow-float);
+        }
+
+        .card-icon {
+            font-size: 38px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-main);
+            letter-spacing: 0.02em;
+        }
+
+        /* 魔法のプロンプトセクション */
+        .magic-section {
+            margin-top: 10px;
+            margin-bottom: 40px;
+        }
+
+        .magic-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 19px;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.05em;
+        }
+        
+        .magic-title::before {
+            content: '✦';
+            color: var(--gold-accent);
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .magic-title span {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-sub);
+            margin-left: 12px;
+            background: rgba(0,0,0,0.04);
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        .tool-group {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.2s;
+        }
+
+        .tool-group:hover {
+            box-shadow: var(--shadow-card);
+        }
+
+        .tool-summary {
+            padding: 18px 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            list-style: none;
+            background: linear-gradient(to right, var(--card-bg), rgba(0,0,0,0.01));
+        }
+        
+        .tool-summary::-webkit-details-marker { display: none; }
+
+        .tool-icon { margin-right: 12px; font-size: 20px; }
+        
+        .tool-role {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-sub);
+            background: var(--input-bg);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: auto;
+            margin-right: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        .arrow-icon {
+            font-size: 12px;
+            color: var(--text-sub);
+            transition: transform 0.2s;
+        }
+
+        details[open] .arrow-icon { transform: rotate(180deg); }
+
+        .prompt-list {
+            padding: 0 20px 20px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .prompt-item {
+            display: flex;
+            flex-direction: column;
+            padding: 16px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .prompt-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .prompt-item:first-child { padding-top: 20px; }
+
+        .prompt-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .prompt-label::before {
+            content: '●';
+            color: var(--accent-color);
+            font-size: 8px;
+            margin-right: 8px;
+        }
+
+        .prompt-content {
+            font-size: 13px;
+            color: var(--text-sub);
+            background: var(--input-bg);
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            border: 1px solid transparent;
+        }
+
+        .prompt-copy-btn {
+            align-self: flex-end;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .prompt-copy-btn::before {
+            content: "📋";
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        .prompt-copy-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        /* シーン画面 */
+        .scene-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .nav-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            position: relative;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-size: 15px;
+            font-weight: 700;
+            padding: 8px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        .back-btn:hover { color: var(--text-main); }
+        .back-btn::before {
+            content: "‹";
+            font-size: 28px;
+            margin-right: 4px;
+            margin-top: -4px;
+        }
+
+        .scene-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--text-main);
+            letter-spacing: 0.05em;
+        }
+
+        .form-group { margin-bottom: 24px; position: relative; } /* position relative追加 */
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+            letter-spacing: 0.02em;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 16px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            appearance: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            line-height: 1.8;
+        }
+
+        textarea::placeholder { color: #AAA; font-size: 14px; line-height: 1.7; }
+        textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.3);
+            background: var(--card-bg);
+        }
+
+        /* 文字数カウンター */
+        .char-counter {
+            position: absolute;
+            bottom: -22px; /* 下部に配置 */
+            right: 4px;
+            font-size: 11px;
+            color: var(--text-sub);
+            opacity: 0.8;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--input-border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 16px;
+            font-family: inherit;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235c6c7b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .warning-box {
+            background-color: var(--danger-bg);
+            color: var(--danger-text);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+            border-left: 4px solid var(--danger-text);
+        }
+        .warning-icon { margin-right: 12px; font-size: 18px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px;
+            border-radius: 50px;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); filter: brightness(1.1); }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .btn-secondary:hover { background: var(--bg-color); }
+        
+        .btn-clear {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-size: 13px;
+            box-shadow: none;
+            padding: 8px;
+            margin-top: 4px;
+            text-decoration: none;
+            opacity: 0.7;
+        }
+        .btn-clear:hover { opacity: 1; }
+
+        .result-area {
+            margin-top: 32px;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            padding-top: 32px;
+        }
+
+        .result-box {
+            background: var(--input-bg);
+            padding: 24px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            margin-bottom: 24px;
+            white-space: pre-wrap;
+            border: 1px solid var(--border-color);
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.8;
+            color: var(--text-main);
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            backdrop-filter: blur(8px);
+        }
+        .modal-overlay.open { display: flex; opacity: 1; }
+
+        .modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            position: relative;
+            box-shadow: var(--shadow-float);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 28px;
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            padding: 4px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .modal-close:hover { background: var(--bg-color); }
+
+        .modal-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 24px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-section { margin-bottom: 32px; }
+
+        .modal-h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.05em;
+        }
+        .modal-h3::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: var(--gold-accent);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .modal-text {
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            line-height: 1.8;
+        }
+
+        .modal-list {
+            padding-left: 0;
+            list-style: none;
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        .modal-list li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+        .modal-list li::before {
+            content: "✔";
+            color: var(--gold-accent);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 12px;
+        }
+
+        .settings-row { margin-bottom: 24px; }
+
+        .theme-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        /* NGワード設定用のスタイル追加 */
+        .settings-textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 14px;
+            resize: none;
+            margin-bottom: 4px;
+            line-height: 1.6;
+        }
+        .settings-textarea:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+        .settings-note {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .demo-area {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+            text-align: center;
+        }
+        
+        .demo-label {
+            font-size: 12px;
+            color: var(--text-sub);
+            opacity: 0.8;
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .btn-demo {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            font-size: 12px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 0 4px;
+            transition: all 0.2s;
+        }
+        .btn-demo:hover {
+            background: var(--bg-color);
+            border-color: var(--text-sub);
+            color: var(--text-main);
+        }
+
+        /* トースト通知 */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background: rgba(51, 51, 51, 0.98);
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 14px 24px;
+            position: fixed;
+            z-index: 300;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%) translateY(10px);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            letter-spacing: 0.05em;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- トースト通知 -->
+    <div id="toast">コピーしました</div>
+
+    <!-- ホーム画面 -->
+    <div id="home-view" class="container">
+        <header>
+            <button class="settings-btn" onclick="app.openSettings()">⚙️</button>
+            <h1><span style="font-size: 24px; margin-right: 8px;">📄</span>司法書士のためのAIひな形</h1>
+            <div class="subtitle">抜けなく、迷わず。</div>
+            <div onclick="app.openUsage()" class="usage-link">使い方を見る</div>
+        </header>
+
+        <div class="grid">
+            <div class="card" onclick="app.openScene('A')">
+                <div class="card-icon">📝</div>
+                <div class="card-title">打ち合わせ整理<br>ひな形</div>
+            </div>
+            <div class="card" onclick="app.openScene('B')">
+                <div class="card-icon">⚖️</div>
+                <div class="card-title">書面構成<br>ひな形</div>
+            </div>
+            <div class="card" onclick="app.openScene('C')">
+                <div class="card-icon">🗣️</div>
+                <div class="card-title">依頼者説明<br>ひな形</div>
+            </div>
+            <div class="card" onclick="app.openScene('D')">
+                <div class="card-icon">🔒</div>
+                <div class="card-title">匿名化<br>ひな形</div>
+            </div>
+        </div>
+
+        <!-- 魔法のプロンプトセクション -->
+        <div class="magic-section">
+            <div class="magic-title">AI別 魔法のプロンプト <span>Copy & Paste</span></div>
+
+            <!-- ChatGPT (秘書) -->
+            <details class="tool-group">
+                <summary class="tool-summary">
+                    <div style="display:flex; align-items:center;">
+                        <span class="tool-icon">🤖</span>
+                        <span>ChatGPT</span>
+                    </div>
+                    <div style="display:flex; align-items:center;">
+                        <span class="tool-role">秘書役</span>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                </summary>
+                <div class="prompt-list">
+                    <div class="prompt-item">
+                        <div class="prompt-label">依頼者メール返信（不足資料の提出依頼）</div>
+                        <div class="prompt-content">以下の依頼者からのメールに対し、不足している資料（印鑑証明書、戸籍謄本など）の提出を、丁寧かつ明確に依頼する返信文案を作成してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">面談メモ清書（相続 登記の打合せ議事録）</div>
+                        <div class="prompt-content">以下の乱雑な面談メモ（相続・登記相談）を、事務所内で共有するための正式な議事録として清書してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">必要書類チェック依頼文（角を立てずに）</div>
+                        <div class="prompt-content">依頼者に登記申請に必要な書類を確認してもらうための依頼文を作成してください。専門用語を避け、角が立たない表現にしてください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">相続関係説明文（わかりやすく）</div>
+                        <div class="prompt-content">以下の複雑な相続関係や法定相続分について、依頼者が理解しやすい平易な日本語で説明する文章を作成してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">論点整理（追加質問リスト）</div>
+                        <div class="prompt-content">以下の相談内容から、登記手続き上の論点やリスクになりそうな点を整理し、追加でヒアリングすべき質問リストを作成してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Gemini (調査員) -->
+            <details class="tool-group">
+                <summary class="tool-summary">
+                    <div style="display:flex; align-items:center;">
+                        <span class="tool-icon">💎</span>
+                        <span>Gemini</span>
+                    </div>
+                    <div style="display:flex; align-items:center;">
+                        <span class="tool-role">調査員役</span>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                </summary>
+                <div class="prompt-list">
+                    <div class="prompt-item">
+                        <div class="prompt-label">相続登記の公的手続き案内の確認（出典付き）</div>
+                        <div class="prompt-content">相続登記の申請手続きについて、法務局の公式サイト等の信頼できる情報源に基づき、手順と出典をまとめてください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">戸籍収集の一般的注意点（出典付き）</div>
+                        <div class="prompt-content">戸籍収集を行う際の一般的な注意点（遡る範囲、改製原戸籍など）について、公的機関の出典を明記してまとめてください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">登記申請に必要な一般的書類の整理（出典付き）</div>
+                        <div class="prompt-content">○○登記（例：所有権移転）の申請に一般的に必要となる書類リストを、法務局の案内等に基づいて整理してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">検索キーワード案（法務局 手引き Q&A）</div>
+                        <div class="prompt-content">この登記手続きについて、法務局の手引きやQ&Aを検索するための効果的なキーワードの組み合わせを5パターン提案してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">よくある不備原因調査（一般論として）</div>
+                        <div class="prompt-content">登記申請において補正対象となりやすい「よくある不備原因」について、一般論として調査し要点をまとめてください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                </div>
+            </details>
+
+            <!-- NotebookLM (図書館) -->
+            <details class="tool-group">
+                <summary class="tool-summary">
+                    <div style="display:flex; align-items:center;">
+                        <span class="tool-icon">📚</span>
+                        <span>NotebookLM</span>
+                    </div>
+                    <div style="display:flex; align-items:center;">
+                        <span class="tool-role">図書館役</span>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                </summary>
+                <div class="prompt-list">
+                    <div class="prompt-item">
+                        <div class="prompt-label">資料一式から不足情報抽出</div>
+                        <div class="prompt-content">アップロードした資料一式（登記原因証明情報案、戸籍等）を読み込み、申請にあたって不足している情報や書類を抽出してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">時系列表＋証拠対応表</div>
+                        <div class="prompt-content">資料に基づき、相続発生から現在までの経緯を時系列順に並べ、裏付けとなる証拠資料を対応させた表を作成してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">依頼者提出資料の整理</div>
+                        <div class="prompt-content">依頼者から提出された大量の資料を分類・整理し、何が揃っていて何が足りないかの一覧を作成してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">複数資料の矛盾点抽出</div>
+                        <div class="prompt-content">複数の資料（遺産分割協議書案と印鑑証明書など）の間で、住所や氏名、日付などの矛盾点がないか抽出してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">質問事項案（依頼者向け）</div>
+                        <div class="prompt-content">資料の内容を踏まえ、事実確認のために依頼者に対してヒアリングすべき具体的な質問事項を作成してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- シーン画面 (共通テンプレート) -->
+    <div id="scene-view" class="container scene-view">
+        <div class="nav-header">
+            <button class="back-btn" onclick="app.goHome()">戻る</button>
+            <div class="scene-title" id="scene-title-text">シーン名</div>
+            <button class="settings-btn" onclick="app.openSettings()">⚙️</button>
+        </div>
+
+        <div class="form-group">
+            <label>入力欄（ここに貼り付け）</label>
+            <!-- spellcheck="false"を追加して赤線防止 -->
+            <textarea id="user-input" placeholder="" oninput="app.checkInput()" spellcheck="false"></textarea>
+            <!-- 文字数カウンター追加 -->
+            <div id="char-count" class="char-counter">0文字</div>
+        </div>
+
+        <div id="warning-box" class="warning-box">
+            <span class="warning-icon">⚠️</span>
+            <!-- 警告メッセージ表示エリア -->
+            <div id="warning-msg"></div>
+        </div>
+
+        <div class="form-group" id="option-container">
+            <div id="opt-B" class="opt-group" style="display:none;">
+                <label>作成目的</label>
+                <select id="select-B">
+                    <option value="メモ用">メモ用（短く整理）</option>
+                    <option value="社内文書用">社内文書用（構成案として）</option>
+                </select>
+            </div>
+            <div id="opt-C" class="opt-group" style="display:none;">
+                <label>文章の長さ</label>
+                <select id="select-C">
+                    <option value="短め">短め（200〜300字）</option>
+                    <option value="普通" selected>普通（400〜600字）</option>
+                    <option value="丁寧">丁寧（800字前後・例えあり）</option>
+                </select>
+            </div>
+            <div id="opt-D" class="opt-group" style="display:none;">
+                <label>匿名化レベル</label>
+                <select id="select-D">
+                    <option value="低">低（個人名・会社名のみ）</option>
+                    <option value="中" selected>中（地名・日時も含める）</option>
+                    <option value="高">高（特定されうる役職等もぼかす）</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="app.generate()">生成する</button>
+
+        <div id="result-area" class="result-area">
+            <label>生成結果（AIへの指示プロンプト）</label>
+            <div class="result-box" id="result-text"></div>
+            <!-- IDを追加してJSで操作可能に -->
+            <button id="copy-btn" class="btn btn-secondary" onclick="app.copyResult()">コピーする</button>
+            <button class="btn btn-clear" onclick="app.clearInput()">入力をクリア</button>
+        </div>
+    </div>
+
+    <!-- 使い方モーダル -->
+    <div id="usage-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="app.closeModal('usage-modal')">×</button>
+            <div class="modal-title">使い方・目的</div>
+            <div class="modal-section">
+                <div class="modal-h3">アプリの目的</div>
+                <p class="modal-text">司法書士業務における「AIへの指示出し」を効率化・高品質化するための支援ツールです。<br>思考を妨げることなくワンタップで、実務に即した精度の高い指示文（プロンプト）を作成できます。</p>
+            </div>
+            <div class="modal-section">
+                <div class="modal-h3">利用手順</div>
+                <ul class="modal-list">
+                    <li><strong>1. シーン選択</strong><br>ホーム画面から、目的に合ったシーン（カード）を選択してください。</li>
+                    <li><strong>2. 情報入力</strong><br>入力欄に、整理したい手元のメモや資料のテキストを貼り付けます。</li>
+                    <li><strong>3. 生成実行</strong><br>必要に応じてオプションを選択し「生成する」ボタンを押すと、AIへの最適な指示文が作成されます。</li>
+                    <li><strong>4. 活用</strong><br>ホーム下部の「魔法のプロンプト」では、実務で頻出する定型文をワンタップでコピーして利用できます。</li>
+                </ul>
+            </div>
+            <div class="modal-section">
+                <div class="modal-h3">注意事項</div>
+                <p class="modal-text">・入力データはサーバーに送信されず、お使いの端末内でのみ安全に処理されます。<br>・生成された回答は、必ず専門家としての知見に基づき最終確認を行ってください。<br>・極めて機密性の高い個人情報（登記・相続・依頼者情報等）は、入力前にある程度伏せることを推奨します。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 設定モーダル -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="app.closeModal('settings-modal')">×</button>
+            <div class="modal-title">設定</div>
+            
+            <div class="settings-row">
+                <label>色合い（テーマ）</label>
+                <select id="theme-select" class="theme-select" onchange="app.changeTheme(this.value)">
+                    <option value="auto">端末の設定に合わせる</option>
+                    <option value="light">ライトモード</option>
+                    <option value="dark">ダークモード</option>
+                </select>
+            </div>
+            
+            <!-- NGワード設定を追加 -->
+            <div class="settings-row">
+                <label>NGワード設定</label>
+                <textarea id="ng-words-input" class="settings-textarea" placeholder="例：口座番号, 実印, マイナンバー, 権利証, 遺言書内容" onchange="app.saveNgWords()"></textarea>
+                <p class="settings-note">※指定した単語が含まれると入力画面で警告が表示されます（カンマ区切りで複数指定可）。</p>
+            </div>
+
+            <div class="demo-area">
+                <span class="demo-label">デモ・動作確認用</span>
+                <button class="btn-demo" onclick="app.loadDemoData()">デモデータ入力</button>
+                <button class="btn-demo" onclick="app.clearDemoData()">デモデータクリア</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            currentScene: null,
+            ngWords: [], // NGワードリスト
+
+            scenes: {
+                'A': { 
+                    title: '打ち合わせ整理ひな形', 
+                    hasOpt: false,
+                    placeholder: "相談日、被相続人の死亡日、相続人候補（配偶者 子 兄弟 代襲など）、家族関係の経緯、財産概要（不動産 預貯金 株式 負債）、遺言の有無、相続放棄検討の有無、登記名義の現状、依頼者の希望（円満 早めに 名義整理）などが含まれる文章にする" 
+                },
+                'B': { 
+                    title: '書面構成ひな形', 
+                    hasOpt: true, 
+                    optId: 'opt-B',
+                    placeholder: "対象登記（相続登記 贈与 売買 抵当権抹消 役員変更など）、対象不動産情報の概要、依頼者の状況、急ぎ度、資料の有無、関係者、懸念点（戸籍収集 不明者 連絡困難 住所変更未了）などが含まれる文章にする" 
+                },
+                'C': { 
+                    title: '依頼者説明ひな形', 
+                    hasOpt: true, 
+                    optId: 'opt-C',
+                    placeholder: "相続登記の流れ 必要期間 何を準備するか 何が決まる必要があるか 追加費用が発生しやすい点 などを説明したいという入力例にする" 
+                },
+                'D': { 
+                    title: '匿名化ひな形', 
+                    hasOpt: true, 
+                    optId: 'opt-D',
+                    placeholder: "個人名 地名 具体日付 不動産の所在地 などが含まれる事例メモを用意する" 
+                }
+            },
+
+            init: function() {
+                const savedTheme = localStorage.getItem('app_theme') || 'auto';
+                document.getElementById('theme-select').value = savedTheme;
+                this.changeTheme(savedTheme);
+                
+                // NGワード読み込み
+                const savedNgWords = localStorage.getItem('app_ng_words') || '';
+                document.getElementById('ng-words-input').value = savedNgWords;
+                this.updateNgWordsList(savedNgWords);
+            },
+            
+            // NGワード保存・更新
+            saveNgWords: function() {
+                const input = document.getElementById('ng-words-input').value;
+                localStorage.setItem('app_ng_words', input);
+                this.updateNgWordsList(input);
+                this.checkInput(); // 即座にチェック反映
+                this.showToast('設定を保存しました');
+            },
+            
+            updateNgWordsList: function(text) {
+                // 全角半角カンマで分割、空白除去
+                this.ngWords = text.split(/,|、/).map(w => w.trim()).filter(w => w.length > 0);
+            },
+
+            openScene: function(sceneId) {
+                this.currentScene = sceneId;
+                const scene = this.scenes[sceneId];
+                document.getElementById('scene-title-text').innerText = scene.title;
+                document.getElementById('user-input').placeholder = scene.placeholder;
+                document.getElementById('home-view').style.display = 'none';
+                document.getElementById('scene-view').style.display = 'flex';
+                this.clearInput();
+                document.querySelectorAll('.opt-group').forEach(el => el.style.display = 'none');
+                if (scene.hasOpt) {
+                    document.getElementById(scene.optId).style.display = 'block';
+                }
+                window.scrollTo(0, 0);
+            },
+
+            goHome: function() {
+                document.getElementById('scene-view').style.display = 'none';
+                document.getElementById('home-view').style.display = 'flex';
+                this.currentScene = null;
+            },
+
+            openUsage: function() { document.getElementById('usage-modal').classList.add('open'); },
+            openSettings: function() { document.getElementById('settings-modal').classList.add('open'); },
+            closeModal: function(id) { document.getElementById(id).classList.remove('open'); },
+
+            changeTheme: function(theme) {
+                localStorage.setItem('app_theme', theme);
+                const root = document.documentElement;
+                if (theme === 'auto') root.removeAttribute('data-theme');
+                else root.setAttribute('data-theme', theme);
+            },
+
+            loadDemoData: function() {
+                let targetScene = this.currentScene;
+                if (!targetScene) {
+                    this.openScene('A');
+                    targetScene = 'A';
+                    this.closeModal('settings-modal');
+                } else {
+                    this.closeModal('settings-modal');
+                }
+                const demoText = this.scenes[targetScene].placeholder.replace('（例）\n', '');
+                const input = document.getElementById('user-input');
+                input.value = demoText;
+                this.checkInput();
+                this.showToast('デモデータを入力しました');
+            },
+
+            clearDemoData: function() {
+                this.clearInput();
+                this.closeModal('settings-modal');
+                this.showToast('入力をクリアしました');
+            },
+
+            checkInput: function() {
+                const text = document.getElementById('user-input').value;
+                const warningBox = document.getElementById('warning-box');
+                const warningMsg = document.getElementById('warning-msg');
+                
+                // 文字数カウント更新
+                const count = text.length;
+                document.getElementById('char-count').innerText = `${count}文字`;
+                
+                // 1. 個人情報チェック (既存)
+                const piiRegex = /\d{2,4}-\d{2,4}-\d{4}|\d{3}-\d{4}/;
+                const hasPii = piiRegex.test(text);
+                
+                // 2. NGワードチェック (新規)
+                const hitNgWords = this.ngWords.filter(word => text.includes(word));
+                const hasNg = hitNgWords.length > 0;
+
+                if (hasPii || hasNg) {
+                    warningBox.style.display = 'flex';
+                    let msgHTML = '';
+                    
+                    if (hasNg) {
+                         msgHTML += `<div style="margin-bottom:8px;"><strong>NGワードが含まれています</strong><br>検知: ${hitNgWords.join(', ')}</div>`;
+                    }
+                    if (hasPii) {
+                         msgHTML += `<div><strong>個人情報の可能性あり</strong><br>電話番号や住所のような情報が含まれています。</div>`;
+                    }
+                    
+                    warningMsg.innerHTML = msgHTML;
+                } else {
+                    warningBox.style.display = 'none';
+                    warningMsg.innerHTML = '';
+                }
+            },
+
+            clearInput: function() {
+                document.getElementById('user-input').value = '';
+                document.getElementById('result-area').style.display = 'none';
+                document.getElementById('warning-box').style.display = 'none';
+                document.getElementById('char-count').innerText = '0文字';
+            },
+
+            generate: function() {
+                const input = document.getElementById('user-input').value;
+                if (!input.trim()) {
+                    this.showToast('テキストを入力してください');
+                    return;
+                }
+                let prompt = '';
+                const scene = this.currentScene;
+                
+                // 共通パーツの定義
+                const commonRules = `【最終 共通ルール】
+・出力は、司法書士がそのまま所内共有・依頼者説明・次の実務判断に使える完成度を目標とする。
+・各セクションの分量は3〜5行を目安とし、長くなりすぎる場合は要点優先で簡潔にまとめる。
+・断定は禁止。「一般的には」「実務上は」「〜とされることが多い」を必ず用いる。
+・最終判断・可否判断は行わず、「確認が必要」「個別事情による」と明示する。
+・不安を煽らず、落ち着いた・安心感のある司法書士トーンで書く。`;
+
+                const commonFooterInstruction = `【全シーン共通：注意書きの追加】
+すべての出力の末尾に、必ず次の一文を追加してください。
+「※本内容は一般的な整理・説明案であり、正式な判断や手続きは個別確認を前提とします。」`;
+
+                const specificAttention = `【司法書士特有の注意視点（必ず反映）】
+相続・登記特有の観点として、該当する場合は以下の点に必ず触れてください（簡潔に一言）。
+・名義が未整理のまま放置した場合の影響
+・期限や順序を誤ると手戻りが大きい点`;
+
+                const navigatorSection = `【司法書士の次アクション（実務ナビ）】
+以下の項目を必ず出力してください。
+・まず行う確認：
+・依頼者へ追加で確認すること：
+・依頼者へ依頼する資料：
+・こちらで取得・手配する資料：
+・記録・証跡として残すべき事項：
+・この段階でやってよいこと：
+・まだやらない方がよいこと：
+※順番とタイミングを重視し、無用な焦りを与えない表現を用いてください。`;
+
+                const selfCheck = `【最終セルフチェック】
+出力前に以下の点を確認し、問題があれば自動修正してから出力してください。
+・このまま依頼者に見せても問題ないか
+・同業の司法書士が読んでも違和感はないか
+・個人特定・守秘義務リスクは完全に回避できているか`;
+
+                if (scene === 'A') {
+                    prompt = `あなたは登記・相続実務に精通した司法書士補助AIです。
+以下の打ち合わせメモや相談内容をもとに、相続関係の事実整理を行ってください。
+
+${commonRules}
+
+【シーンA 最終調整】
+・冒頭に必ず「この整理は、相続登記・手続きを安全に進めるための前提整理です。」と記述する。
+・相続人間で認識がズレやすいポイント、後から争点になりやすい箇所、戸籍・資料収集で時間がかかりやすい点を含める。
+・不足情報の項目では「なぜその情報が必要か」を一言添える。
+
+【出力項目】
+1 事実関係の整理（時系列）
+2 家族関係の整理（関係性の箇条書き、必要なら家系の文章図）
+3 相続人間で認識がズレやすいポイント・後から争点になりやすい箇所
+4 財産と負債の棚卸し（不動産 預貯金 その他 不明点）
+5 戸籍・資料収集で時間がかかりやすい点
+6 不足情報（※必要理由付き）
+7 進め方の全体像（次に何が決まれば前へ進むか）
+
+${specificAttention}
+${navigatorSection}
+${commonFooterInstruction}
+${selfCheck}
+
+【入力内容】
+${input}`;
+                } 
+                else if (scene === 'B') {
+                    const purpose = document.getElementById('select-B').value;
+                    const purposeNote = purpose === '社内文書用' 
+                        ? '社内共有・構成案を意識した記述' 
+                        : 'メモとして要点を整理';
+                    
+                    prompt = `あなたは登記・相続実務に精通した司法書士補助AIです。
+以下の内容をもとに、登記申請の流れと必要書類の構成案を作成してください。
+
+${commonRules}
+
+【シーンB 最終調整】
+・${purposeNote}
+・実務的な視点で抜け漏れがないように構成する。
+・必要書類は必ず「依頼者から預かる書類」「こちらで取得・手配する書類」「状況次第で追加になる可能性がある書類」の3区分で整理する。
+・注意点として「依頼者がよく誤解しやすい点」「後から追加になりやすい資料」を1〜2点明示する。
+
+【出力項目】
+1 申請の目的（何の登記か）
+2 全体の流れ（ステップ）
+3 必要書類一覧（3区分で整理）
+4 つまずきポイント（不足しやすい資料、追加調査が必要になる典型）
+5 依頼者への確認事項（誤解しやすい点含む）
+6 想定スケジュール（一般的にはの範囲で）
+
+${specificAttention}
+${navigatorSection}
+${commonFooterInstruction}
+${selfCheck}
+
+【入力内容】
+${input}`;
+                } 
+                else if (scene === 'C') {
+                    const length = document.getElementById('select-C').value;
+                    let lengthInstruction = '';
+                    if (length === '短め') lengthInstruction = '文字数は200〜300字程度でまとめてください。';
+                    else if (length === '普通') lengthInstruction = '文字数は400〜600字程度でまとめてください。';
+                    else lengthInstruction = '文字数は800字前後とし、例え話を少し交えて丁寧に説明してください。';
+                    
+                    prompt = `あなたは登記・相続実務に精通した司法書士補助AIです。
+以下の内容について、専門用語を薄め、依頼者に分かりやすく説明する文章を作成してください。
+
+${commonRules}
+
+【シーンC 最終調整】
+・${lengthInstruction}
+・冒頭では必ず「安心してよい点」と「注意して進めたい点」をセットで伝える。
+・文章全体は「司法書士が横で段取りを確認しながら説明している口調」で記述する。
+・専門用語を使う場合は必ず（ ）で日常語に言い換える。
+
+【出力構成】
+1 まず結論（安心点と注意点）
+2 手続きの全体像（ざっくり）
+3 何を準備するか（依頼者が用意するもの）
+4 よくあるつまずき（先回りして安心させる）
+5 期間の目安（一般的には）
+6 よくある質問（依頼者が聞きがちなものを2〜3）
+
+${specificAttention}
+${navigatorSection}
+${commonFooterInstruction}
+${selfCheck}
+
+【入力内容】
+${input}`;
+                } 
+                else if (scene === 'D') {
+                    const level = document.getElementById('select-D').value;
+                    let levelInstruction = '';
+                    if (level === '低') levelInstruction = '個人名・会社名・団体名を一般名詞（例：A氏、B社）に置き換えてください。';
+                    else if (level === '中') levelInstruction = '個人名・会社名に加え、地名や具体的な日時も一般化して置き換えてください。';
+                    else levelInstruction = '所在地、関係者の続柄、日付、財産規模の特徴、職業や役職など特定されうる要素もすべて一般化してぼかしてください。';
+                    
+                    prompt = `あなたは登記・相続実務に精通した司法書士補助AIです。
+以下の事例を、共有・研修用に匿名化してください。
+
+${commonRules}
+
+【シーンD 最終調整】
+・${levelInstruction}
+・匿名化後の文章は、新人司法書士が読んでも手続きの流れが追えるレベルにする。
+・学びポイントでは必ず「初動で良かった点」または「先に確認しておくべきだった点」のどちらかを含める。
+
+【出力】
+1 匿名化後の文章
+2 置換対応表（元→置換後）
+3 この事例から学べる実務上のポイント
+
+${specificAttention}
+${navigatorSection}
+${commonFooterInstruction}
+${selfCheck}
+
+【入力内容】
+${input}`;
+                }
+
+                document.getElementById('result-text').textContent = prompt;
+                document.getElementById('result-area').style.display = 'block';
+                // 結果表示後にスクロール
+                setTimeout(() => { document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' }); }, 100);
+                
+                // コピーボタンのテキストをリセット
+                const copyBtn = document.getElementById('copy-btn');
+                if(copyBtn) {
+                    copyBtn.textContent = 'コピーする';
+                    copyBtn.classList.remove('btn-primary');
+                    copyBtn.classList.add('btn-secondary');
+                }
+            },
+
+            copyResult: function() {
+                const text = document.getElementById('result-text').textContent;
+                this.performCopy(text);
+            },
+            
+            // 魔法のプロンプト用コピー関数
+            copyText: function(buttonElement) {
+                // ボタンの前の要素（.prompt-content）のテキストを取得
+                const text = buttonElement.previousElementSibling.textContent;
+                this.performCopy(text, buttonElement);
+            },
+
+            performCopy: function(text, btnElement = null) {
+                if (!text) return;
+                
+                const onCopySuccess = () => {
+                    this.showToast('コピーしました');
+                    
+                    // ボタンの見た目を一時的に変更（フィードバック）
+                    const targetBtn = btnElement || document.getElementById('copy-btn');
+                    if (targetBtn) {
+                        const originalText = targetBtn.textContent;
+                        targetBtn.textContent = 'コピーしました✨';
+                        // 色を変えるなどしても良いが、ここではテキスト変更のみ
+                        
+                        setTimeout(() => {
+                            targetBtn.textContent = originalText;
+                        }, 2000);
+                    }
+                };
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(onCopySuccess).catch(err => {
+                        this.fallbackCopy(text);
+                    });
+                } else {
+                    this.fallbackCopy(text);
+                }
+            },
+            
+            fallbackCopy: function(text) {
+                try {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    this.showToast('コピーしました');
+                } catch (err) {
+                    this.showToast('コピーできませんでした');
+                }
+            },
+
+            showToast: function(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = 'show';
+                setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
