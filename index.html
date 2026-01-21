@@ -903,6 +903,47 @@
                         <div class="prompt-content">以下の相談内容から、登記手続き上の論点やリスクになりそうな点を整理し、追加でヒアリングすべき質問リストを作成してください。</div>
                         <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
                     </div>
+                    <!-- ChatGPT 追加5件 -->
+                    <div class="prompt-item">
+                        <div class="prompt-label">商業登記の不足資料リマインド（役員変更）</div>
+                        <div class="prompt-content">以下の状況を前提に、依頼者へ不足資料の提出依頼メールを作成してください。
+
+やわらかい口調で、必要理由も一言添えてください。固有名詞は伏せてください。
+（会社の状況：役員変更の内容、決議日、任期、添付の有無）</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">登記申請の段取り説明（依頼者向け・安心トーン）</div>
+                        <div class="prompt-content">以下の案件について、依頼者向けに「今後の流れ」を説明する文章を作成してください。
+
+不安を煽らず、次に必要なことを明確に。断定は避けてください。
+（案件：相続登記／贈与／売買／抵当権抹消など）</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">費用が増えやすいポイントの事前説明文</div>
+                        <div class="prompt-content">司法書士業務で追加費用が発生しやすい典型ポイントを、依頼者に角が立たない形で説明する文章にしてください。
+
+「一般的には」を入れ、決めつけない書き方で。
+（案件種別）</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">委任状・本人確認の依頼文（丁寧・明確）</div>
+                        <div class="prompt-content">依頼者へ、委任状の取り交わしと本人確認（身分証等）をお願いする文章を作成してください。
+
+目的と必要性を短く添え、提出方法も提案してください。
+（提出方法：郵送／来所／PDFなど）</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">論点整理（住所変更・氏名変更が絡むケース）</div>
+                        <div class="prompt-content">以下の相談内容から、住所変更や氏名変更が登記に影響する可能性を整理し、
+
+追加で確認すべき質問リストを作成してください。断定せず、確認事項として。
+（相談内容）</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
                 </div>
             </details>
 
@@ -944,6 +985,42 @@
                         <div class="prompt-content">登記申請において補正対象となりやすい「よくある不備原因」について、一般論として調査し要点をまとめてください。</div>
                         <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
                     </div>
+                    <!-- Gemini 追加5件 -->
+                    <div class="prompt-item">
+                        <div class="prompt-label">相続登記の基本手順（法務局の出典付き）</div>
+                        <div class="prompt-content">相続登記の一般的な手順を、法務局など公的情報に基づき整理してください。
+
+手順を箇条書きにし、出典URLも併記してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">登録免許税の考え方（一般論・出典付き）</div>
+                        <div class="prompt-content">登録免許税の基本的な考え方（課税標準、税率の例、評価証明との関係）を一般論で整理してください。
+
+誤解が起きやすい点も添えて、出典URLも併記してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">商業登記（役員変更）でよく参照する公式情報の探し方</div>
+                        <div class="prompt-content">役員変更登記について、法務局の手引き・Q&A・記載例を探すための検索導線を
+
+ステップ形式で教えてください（例：サイトの階層、検索キーワード）。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">登記事項証明書の読み取りポイント（実務メモ）</div>
+                        <div class="prompt-content">登記事項証明書（不動産）を読むときに、実務上まず確認する欄と注意点を整理してください。
+
+一般論としてまとめ、できれば根拠となる出典URLも併記してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">補正が出やすい論点（一般論）</div>
+                        <div class="prompt-content">登記申請で補正になりやすい論点を、一般論として5〜8項目で整理してください。
+
+「なぜ起きるか」「事前の防ぎ方」も一言ずつ添えてください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
                 </div>
             </details>
 
@@ -983,6 +1060,42 @@
                     <div class="prompt-item">
                         <div class="prompt-label">質問事項案（依頼者向け）</div>
                         <div class="prompt-content">資料の内容を踏まえ、事実確認のために依頼者に対してヒアリングすべき具体的な質問事項を作成してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <!-- NotebookLM 追加5件 -->
+                    <div class="prompt-item">
+                        <div class="prompt-label">資料一式から登記原因の整合性チェック</div>
+                        <div class="prompt-content">アップした資料一式から、登記原因（相続／贈与／売買など）に関する記載の整合性をチェックしてください。
+
+矛盾や不足があれば「確認項目」として列挙してください（断定しない）。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">戸籍・住民票・評価証明の不足チェックリスト化</div>
+                        <div class="prompt-content">資料から、戸籍・住民票・評価証明などの提出書類について、揃っているもの／不足の疑いがあるものを仕分けしてください。
+
+最後に、依頼者へ確認する質問を5つ作ってください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">遺産分割協議書（案）のリスク表現抽出</div>
+                        <div class="prompt-content">遺産分割協議書（案）を読み込み、表現が曖昧で後で揉めやすい箇所や修正候補を抽出してください。
+
+断定せず「注意ポイント」として提示してください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">時系列＋手続きのToDo化（誰が・いつまで）</div>
+                        <div class="prompt-content">資料・メモをもとに、相続発生から申請までの時系列とToDoを作成してください。
+
+「タスク」「担当（依頼者／事務所）」「期限目安」「必要資料」で表にしてください。</div>
+                        <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
+                    </div>
+                    <div class="prompt-item">
+                        <div class="prompt-label">依頼者説明で使える定型フレーズ抽出</div>
+                        <div class="prompt-content">資料の中から、依頼者説明に再利用できる言い回し（安心させる説明、注意点の伝え方）を抽出し、
+
+用途別（期間、費用、資料、手続き順）に分類してください。</div>
                         <button class="prompt-copy-btn" onclick="app.copyText(this)">コピー</button>
                     </div>
                 </div>
